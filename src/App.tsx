@@ -38,6 +38,11 @@ for (let rowIndex = 0; rowIndex < MATRIX.length; rowIndex++) {
     MATRIX[rowIndex][cellIndex] = bombCount;
   }
 }
+
+function Shovel() {
+  return <img src="/shovel.svg" width="24" height="24" />;
+}
+
 function App() {
   const [clicked, setClicked] = useState<string[]>([]);
   const [status, setStatus] = useState<"playing" | "won" | "lost">("playing");
@@ -66,8 +71,8 @@ function App() {
                   className={`h-8 w-8 border flex items-center justify-center ${clicked.includes(`${rowIndex}-${cellIndex}`) ? "bg-white/20" : "bg-transparent"}`}
                 >
                   {clicked.includes(`${rowIndex}-${cellIndex}`) ? (
-                    <span>
-                      {cell === "B" ? "🎃" : cell === 0 ? null : cell}
+                    <span className={cell === "B" ? "bg-red-500" : ""}>
+                      {cell === "B" ? <Shovel /> : cell === 0 ? null : cell}
                     </span>
                   ) : (
                     <button
