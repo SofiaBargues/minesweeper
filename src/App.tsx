@@ -8,8 +8,7 @@ const MATCHES = [
   [0, -1],
   [0, 1],
   [1, -1],
-  [1, 1],
-  [-1, 0],
+  [1, 0],
   [1, 1],
 ];
 const MATRIX = Array.from({ length: GRID_SIZE }, () =>
@@ -17,10 +16,17 @@ const MATRIX = Array.from({ length: GRID_SIZE }, () =>
 );
 console.log(MATRIX);
 
-for (let count = GRID_SIZE; count > 0; count--) {
-  const rowRandom = Math.floor(Math.random() * GRID_SIZE);
-  const cellRandom = Math.floor(Math.random() * GRID_SIZE);
+const NUM_BOMBS = 15;
+const bombLocations: { [key: string]: boolean } = {};
 
+for (let count = NUM_BOMBS; count > 0; count--) {
+  let rowRandom: number, cellRandom: number;
+  do {
+    rowRandom = Math.floor(Math.random() * GRID_SIZE);
+    cellRandom = Math.floor(Math.random() * GRID_SIZE);
+  } while (bombLocations[`${cellRandom}-${rowRandom}`]);
+
+  bombLocations[`${cellRandom}-${rowRandom}`] = true;
   MATRIX[cellRandom][rowRandom] = "B";
 }
 
@@ -40,7 +46,7 @@ for (let rowIndex = 0; rowIndex < MATRIX.length; rowIndex++) {
 }
 
 function Shovel() {
-  return <img src="/shovel.svg" width="56" height="56" />;
+  return <img src="/shovel.svg" width="50" height="50" />;
 }
 
 function App() {
@@ -49,7 +55,7 @@ function App() {
 
   function handleClick(rowIndex: number, cellIndex: number) {
     setClicked((clicked) => clicked.concat(`${rowIndex}-${cellIndex}`));
-    if (clicked.length + 1 === GRID_SIZE ** 2 - GRID_SIZE) {
+    if (clicked.length + 1 === GRID_SIZE ** 2 - NUM_BOMBS) {
       setStatus("won");
     } else if (MATRIX[rowIndex][cellIndex] === "B") {
       setStatus("lost");
@@ -57,57 +63,65 @@ function App() {
   }
 
   return (
-    <main className="container m-auto grid min-h-screen grid-rows-[auto,1fr,auto] px-4">
-      <header className="text-5xl py-4 font-bold leading-[3rem] text-center">
-        Booscaminas
-      </header>
-      <section className=" flex items-center justify-start flex-col gap-4 text-center text-5xl">
-        <div className="py-8">
-          {MATRIX.map((row, rowIndex) => (
-            <article key={String(rowIndex)} className="flex">
-              {row.map((cell: any, cellIndex: any) => (
-                <div
-                  key={`${rowIndex}-${cellIndex}`}
-                  className={`h-20 w-20 border flex items-center justify-center ${clicked.includes(`${rowIndex}-${cellIndex}`) ? "bg-white/20" : "bg-transparent"}`}
-                >
-                  {clicked.includes(`${rowIndex}-${cellIndex}`) ? (
-                    <span>
-                      {cell === "B" ? <Shovel /> : cell === 0 ? null : cell}
-                    </span>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        status === "playing" && handleClick(rowIndex, cellIndex)
-                      }
-                      className="h-full w-full"
-                    />
-                  )}
-                </div>
-              ))}
-            </article>
-          ))}
-        </div>
-        {status === "lost" && (
-          <div>
-            <p>You lost</p>
-            <button onClick={() => window.location.reload()}>Play again</button>
+    <html data-theme="halloween">
+      <main className="container m-auto grid min-h-screen grid-rows-[auto,1fr,auto] px-4">
+        <header className="text-5xl py-4 font-bold leading-[3rem] text-center">
+          Booscaminas
+        </header>
+        <section className=" flex items-center justify-start flex-col text-center text-4xl">
+          <div className="py-8">
+            {MATRIX.map((row, rowIndex) => (
+              <article key={String(rowIndex)} className="flex">
+                {row.map((cell: any, cellIndex: any) => (
+                  <div
+                    key={`${rowIndex}-${cellIndex}`}
+                    className={`h-20 w-20 border flex items-center justify-center ${clicked.includes(`${rowIndex}-${cellIndex}`) ? "bg-white/20" : "bg-transparent"}`}
+                  >
+                    {clicked.includes(`${rowIndex}-${cellIndex}`) ? (
+                      <span>
+                        {cell === "B" ? <Shovel /> : cell === 0 ? null : cell}
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          status === "playing" &&
+                          handleClick(rowIndex, cellIndex)
+                        }
+                        className="h-full w-full"
+                      />
+                    )}
+                  </div>
+                ))}
+              </article>
+            ))}
           </div>
-        )}
+          {status === "lost" && (
+            <div>
+              <p>You lost</p>
+              <button
+                className="btn btn-active btn-primary"
+                onClick={() => window.location.reload()}
+              >
+                Play again
+              </button>
+            </div>
+          )}
 
-        {status === "won" && (
-          <div>
-            <p>You won!</p>
-            <button
-              className="btn btn-primary"
-              onClick={() => window.location.reload()}
-            >
-              Play again
-            </button>
-          </div>
-        )}
-      </section>
-    </main>
+          {status === "won" && (
+            <div>
+              <p>You won!</p>
+              <button
+                className="btn btn-active btn-primary"
+                onClick={() => window.location.reload()}
+              >
+                Play again
+              </button>
+            </div>
+          )}
+        </section>
+      </main>
+    </html>
   );
 }
 
