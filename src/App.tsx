@@ -16,7 +16,7 @@ const MATRIX = Array.from({ length: GRID_SIZE }, () =>
 );
 console.log(MATRIX);
 
-const NUM_BOMBS = 15;
+const NUM_BOMBS = 7;
 const bombLocations: { [key: string]: boolean } = {};
 
 for (let count = NUM_BOMBS; count > 0; count--) {
