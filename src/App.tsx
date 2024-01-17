@@ -71,7 +71,7 @@ function App() {
                   className={`h-8 w-8 border flex items-center justify-center ${clicked.includes(`${rowIndex}-${cellIndex}`) ? "bg-white/20" : "bg-transparent"}`}
                 >
                   {clicked.includes(`${rowIndex}-${cellIndex}`) ? (
-                    <span className={cell === "B" ? "bg-red-500" : ""}>
+                    <span>
                       {cell === "B" ? <Shovel /> : cell === 0 ? null : cell}
                     </span>
                   ) : (
