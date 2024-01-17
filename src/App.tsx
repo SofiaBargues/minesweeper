@@ -53,7 +53,9 @@ function App() {
 
   return (
     <main className="container m-auto grid min-h-screen grid-rows-[auto,1fr,auto] px-4">
-      <header className="text-xl font-bold leading-[3rem]">booscaminas</header>
+      <header className="text-xl font-bold leading-[3rem] text-center">
+        Booscaminas
+      </header>
       <section className=" flex items-center justify-center flex-col gap-4 text-center">
         <section className="py-8">
           {MATRIX.map((row, rowIndex) => (
