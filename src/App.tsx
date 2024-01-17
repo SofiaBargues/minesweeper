@@ -97,9 +97,6 @@ function App() {
           </div>
         )}
       </section>
-      <footer className="text-center leading-[3rem] opacity-70">
-        © {new Date().getFullYear()} booscaminas
-      </footer>
     </main>
   );
 }
